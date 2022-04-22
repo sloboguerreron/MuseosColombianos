@@ -11,7 +11,7 @@ import { Button } from 'protractor';
 export class MapComponent implements AfterViewInit {
 
   private map;
-  public showDescription: boolean = false;
+  public showDescription: boolean;
 
   //boton
   public button = '<input type="button" onclick="submitDetalle" value="Detalle Museo" id="num_parrafos" name="DetalleMuseo"/>';

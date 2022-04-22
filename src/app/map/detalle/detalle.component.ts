@@ -17,4 +17,8 @@ export class DetalleComponent implements OnInit {
 
     return this.description;
   }
+
+  cerrarVentana() {
+    this.description = false;
+  }
 }
