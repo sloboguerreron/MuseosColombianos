@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { MapComponent } from './map/map.component';
 import { DetalleComponent } from './map/detalle/detalle.component';
 
+import { HttpClientModule } from "@angular/common/http";
+
 //import { MatSliderModule } from '@angular/material/slider';
 //import {MatToolbarModule} from '@angular/material/toolbar';
 //import {MatIconModule} from '@angular/material/icon';
@@ -19,6 +21,7 @@ import { DetalleComponent } from './map/detalle/detalle.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule
    /* MatSliderModule,
     MatToolbarModule,
     MatIconModule*/
