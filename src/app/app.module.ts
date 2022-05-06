@@ -12,23 +12,30 @@ import { ManualDeUsoComponent } from './map/manual-de-uso/manual-de-uso.componen
 //import { MatSliderModule } from '@angular/material/slider';
 //import {MatToolbarModule} from '@angular/material/toolbar';
 //import {MatIconModule} from '@angular/material/icon';
+// FireBase
+import { environment } from "src/environments/environment";
+import { AngularFireModule } from "@angular/fire";
+import { AngularFirestoreModule } from "@angular/fire/firestore";
+import { ConsultarMuseoService } from './services/consulta-museos.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
     DetalleComponent,
-    ManualDeUsoComponent
+    ManualDeUsoComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFirestoreModule,
    /* MatSliderModule,
     MatToolbarModule,
     MatIconModule*/
   ],
-  providers: [],
+  providers: [ConsultarMuseoService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

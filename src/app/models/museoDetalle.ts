@@ -1,4 +1,4 @@
 export interface museoDetalle {
-  nombre?: string;
-  descripcion?: string;
+  nombre: string;
+  descripcion: string;
 }

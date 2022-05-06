@@ -1,7 +1,19 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, AfterViewInit, SystemJsNgModuleLoader } from '@angular/core';
 import { info } from 'console';
 import * as L from 'leaflet';
 import { Button } from 'protractor';
+
+
+import { ConsultarService } from '../services/consultar.service';
+import { ConsultarMuseoService } from '../services/consulta-museos.service';
+
+import { Museo } from '../models/museo';
+import { Consulta } from './../models/Consulta';
+import { museoDetalle } from './../models/museoDetalle';
+import { stringify } from 'querystring';
+
+//import {  } from '../services/consulta-museos.service';
 
 @Component({
   selector: 'app-map',
@@ -12,17 +24,69 @@ export class MapComponent implements AfterViewInit {
 
   private map;
   public showDescription: boolean;
+  //public museoDetalle: museoDetalle;
+  //museos lista
+  museos = { count: 0, data: [] };
+  museosColombia: Museo[] = [];
 
-  //boton
-  public button = '<input type="button" onclick="submitDetalle" value="Detalle Museo" id="num_parrafos" name="DetalleMuseo"/>';
+  constructor(private http: HttpClient, private service: ConsultarService, private museosService: ConsultarMuseoService) {
+    //private serviceMuseo: ConsultarServiceMuseo
+  }
 
-  public submitDetalle(){
-    this.showDescription = true;
+  ngOnInit(): void {
+    this.museosService.listaMuseosService().subscribe(resp => {
+      this.museos.data = resp.map((e: any) => {
+        return {
+          id: e.payload.doc.data().id,
+          nombre_museo: e.payload.doc.data().nombre_museo,
+          ciudad: e.payload.doc.data().ciudad,
+          coordenadasX: e.payload.doc.data().coordenadasX,
+          coordenadasY: e.payload.doc.data().coordenadasY,
+        }
+
+      })
+      this.organizarTodosMuseos();
+    });
+
+  }
+
+  public organizarTodosMuseos() {
+    for (let i = 0; i < this.museos.data.length; i++) {
+      this.museosColombia.push(this.museos.data[i]);
+    }
+
+    //cuadrar los popup
+    for (let i = 0; i < this.museosColombia.length; i++) {
+      var markerGeneralcito = L.marker([this.museosColombia[i]['coordenadasX'], this.museosColombia[i]['coordenadasY']]).addTo(this.map);
+      let nombremuseo = this.museosColombia[i]['nombre_museo'];
+      let ciudadmuseo = this.museosColombia[i]['ciudad'];
+      const _this = this;
+      let botonGeneralcito = document.createElement('button');
+      botonGeneralcito.onclick = function () {
+        _this.submitDetalleMuseos(nombremuseo, ciudadmuseo);
+      }
+      botonGeneralcito.innerHTML = "Detalle Museo";
+      let infoMuseoGeneral = document.createElement('b');
+      infoMuseoGeneral.innerHTML = this.museosColombia[i]['nombre_museo'];
+      let divMuseoGeneral = document.createElement('div');
+      divMuseoGeneral.append(infoMuseoGeneral);
+      divMuseoGeneral.append(botonGeneralcito);
+
+      markerGeneralcito.bindPopup(divMuseoGeneral).openPopup();
+    }
+  }
+
+  public submitDetalleMuseos(nombre_museo: string, ciudad: string){
+    let consultaMuseo: Consulta = {
+      nombreMuseo: nombre_museo,
+      ciudad: ciudad
+    }
+    this.service.getMuseo(consultaMuseo);
   }
 
   private initMap(): void {
     this.map = L.map('map', {
-      center: [ 4.655011, -74.089214 ],
+      center: [4.655011, -74.089214],
       zoom: 6.5
     });
 
@@ -33,11 +97,6 @@ export class MapComponent implements AfterViewInit {
     });
 
     tiles.addTo(this.map);
-    //bogota
-    var markerMuseoBotero = L.marker([4.596736, -74.072983]).addTo(this.map);
-    var markerMuseoCasaMoneda = L.marker([4.597059, -74.073474]).addTo(this.map);
-    var markerMuseoDelOro = L.marker([4.601919, -74.072]).addTo(this.map);
-    var markerMuseoNacional = L.marker([4.615798, -74.068842]).addTo(this.map);
     //medellin
     var markerMuseoCasaDeLaMemoria = L.marker([6.245804, -75.556752]).addTo(this.map);
     var markerMuseosArteModerno = L.marker([6.223986, -75.573943]).addTo(this.map);
@@ -51,25 +110,6 @@ export class MapComponent implements AfterViewInit {
     var markerMuseoDeArteLibre = L.marker([3.466199, -76.523133]).addTo(this.map);
     var markerMuseoArqueologicoLaMerced = L.marker([3.450586, -76.536703]).addTo(this.map);
 
-    const _this = this;
-    let botonMuseoNacional = document.createElement('button');
-    botonMuseoNacional.onclick = function() {
-      _this.submitDetalle();
-    }
-    botonMuseoNacional.innerHTML = "Detalle Museo";
-    let infoMuseoNacional = document.createElement('b');
-    infoMuseoNacional.innerHTML = "Museo Nacional.";
-    let divMuseoNacional = document.createElement('div');
-    divMuseoNacional.append(infoMuseoNacional);
-    divMuseoNacional.append(botonMuseoNacional);
-
-
-    markerMuseoBotero.bindPopup("<b> Museo Botero.").openPopup();
-    markerMuseoCasaMoneda.bindPopup("<b> Museo Casa Moneda. </b> <br> detalle").openPopup();
-    markerMuseoDelOro.bindPopup("<b> Museo del Oro.").openPopup();
-    //markerMuseoNacional.bindPopup("<b> Museo Nacional. <br>"+this.button).openPopup();
-    markerMuseoNacional.bindPopup(divMuseoNacional).openPopup();
-
     markerMuseoCasaDeLaMemoria.bindPopup("<b> Museo Casa de la Memoria.").openPopup();
     markerMuseosArteModerno.bindPopup("<b> Museo Arte Moderno.").openPopup();
     markerMuseoDelAguaEPM.bindPopup("<b> Museo Del Agua EPM.").openPopup();
@@ -81,19 +121,14 @@ export class MapComponent implements AfterViewInit {
     markerMuseoDeLaSalsa.bindPopup("<b> Museo De La Salsa.").openPopup();
     markerMuseoDeArteLibre.bindPopup("<b> Museo De Arte Libre.").openPopup();
     markerMuseoArqueologicoLaMerced.bindPopup("<b> Museo Arueologico laMerced.").openPopup();
-
-
   }
-
-
-  constructor() { }
 
   ngAfterViewInit(): void {
     this.initMap();
   }
 
-  funcionDetallewrapper (){
-    console.log('entre al boton')
-  }
+
+
+
 
 }
