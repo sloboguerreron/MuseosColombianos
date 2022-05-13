@@ -1,4 +1,5 @@
 import { ConsultarService } from './services/consultar.service';
+import { ConsultarMuseoService } from '../app/services/consulta-museos.service';
 import { Consulta } from './models/Consulta';
 import { Component } from '@angular/core';
 
@@ -12,9 +13,11 @@ import { Component } from '@angular/core';
 
 
 export class AppComponent {
-  title = 'museosColombia';
 
-  constructor(private service: ConsultarService){}
+  public cambioDeVentana: Boolean = false;
+  constructor(private service: ConsultarService,  private museosService: ConsultarMuseoService){}
+
+
 
   public buscarMuseo(){
     let consulta: Consulta = {
@@ -22,8 +25,5 @@ export class AppComponent {
       ciudad: "Bogotá"
     }
     this.service.getMuseo(consulta);
-
   }
-
 }
-

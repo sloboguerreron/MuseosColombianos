@@ -1,4 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ConsultarMuseoService } from './../../services/consulta-museos.service';
+import { museoDetalle } from './../../models/museoDetalle';
+import { Museo } from './../../models/museo';
+import { Component, Input, OnInit, Output } from '@angular/core';
+import { IcuPlaceholder } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Component({
   selector: 'app-detalle',
@@ -8,17 +12,28 @@ import { Component, Input, OnInit } from '@angular/core';
 export class DetalleComponent implements OnInit {
 
   @Input() description: boolean = false;
-  constructor() { }
+  @Input() museoDetalle: museoDetalle;
+  @Input() museosColombia: Museo;
+  @Input() museoMuseo: Museo;
+
+  constructor(museosService: ConsultarMuseoService) { }
 
   ngOnInit(): void {
+
   }
 
   showDescription() :boolean {
-
     return this.description;
   }
 
   cerrarVentana() {
-    this.description = false;
+    this.description = !this.description;
+  }
+
+  mostrarDetalle() {
+
+    console.log(' entro al hijito' + JSON.stringify(this.museoDetalle) ) ;
+
+
   }
 }

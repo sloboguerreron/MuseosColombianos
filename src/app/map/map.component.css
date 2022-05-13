@@ -16,3 +16,11 @@
 #map {
   height: 100%;
 }
+
+.botonGeneralcito {background-color: #4CAF50;}
+.button {
+  -webkit-transition-duration: 0.4s; /* Safari */
+  border-radius: 5px;
+  transition-duration: 0.4s;
+  background-color: #f95568;
+}

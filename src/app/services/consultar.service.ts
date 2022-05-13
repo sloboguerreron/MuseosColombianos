@@ -1,3 +1,4 @@
+import { museoDetalle } from './../models/museoDetalle';
 import { Injectable } from '@angular/core';
 
 import { HttpClient } from "@angular/common/http";
@@ -14,6 +15,6 @@ export class ConsultarService {
   constructor(private http: HttpClient) { }
 
   public getMuseo(consulta: Consulta){
-    return this.http.post<Consulta>(this.URL, consulta).subscribe(data => console.log(data));
+    return this.http.post<Consulta>(this.URL, consulta);
   }
 }
