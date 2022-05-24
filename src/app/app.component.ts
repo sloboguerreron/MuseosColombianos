@@ -18,7 +18,7 @@ import Swal from 'sweetalert2';
 
 export class AppComponent {
 
-  textoDeInput: string = null;
+  nombre_museo : string;
   public museoBuscar: Museo[] = [];
   public museoDetalleBuscar: museoDetalle[] = [];
   public showDescription: boolean;
@@ -27,11 +27,12 @@ export class AppComponent {
 
   public buscarMuseo() {
 
+    console.log('este el nombre:');
+    console.log(this.nombre_museo);
 
-    let nombre_museo = "Museo del Oro";
-    this.museosService.consultarMuseoNombre(nombre_museo).subscribe((data) => {
+    this.nombre_museo = this.nombre_museo.toLowerCase();
+    this.museosService.consultarMuseoNombre(this.nombre_museo).subscribe((data) => {
       this.museoBuscar = [];
-
       if (data[0]) {
         let museo: Museo = {
           id: data[0]['id'],
@@ -63,14 +64,7 @@ export class AppComponent {
           'error'
         )
       }
-
     });
-
-    /*let consulta: Consulta = {
-      nombreMuseo: "museo del oro",
-      ciudad: "Bogotá"
-    }
-    this.museosService.consultarMuseo("3").subscribe((data) => { console.log(data)})
-    //this.service.getMuseo(consulta);*/
+    this.nombre_museo = "";
   }
 }

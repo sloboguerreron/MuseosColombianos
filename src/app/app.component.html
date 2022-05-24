@@ -11,7 +11,7 @@
         </li>
       </ul>
       <form class="d-flex">
-        <input class="form-control me-2" type="search"  placeholder="Nombre Museo" aria-label="Search" >
+        <input class="form-control me-2" type="search" id="nombre_museo" name="nombre_museo"  placeholder="Nombre Museo" [(ngModel)]="nombre_museo" >
 
         <button class="btn btn-outline-success"  (click)="buscarMuseo()">Buscar</button>
       </form>
