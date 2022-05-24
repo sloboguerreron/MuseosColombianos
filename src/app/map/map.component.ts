@@ -29,11 +29,9 @@ export class MapComponent implements AfterViewInit {
   museos = { count: 0, data: [] };
   public museosColombia: Museo[] = [];
   public museoDetalle: museoDetalle[] = [];
-  public numeroMuseo: number = 0;
   public museoMuseo: Museo[] = [];
 
   constructor(private http: HttpClient, private service: ConsultarService, private museosService: ConsultarMuseoService) {
-    //private serviceMuseo: ConsultarServiceMuseo
   }
 
   ngOnInit(): void {
@@ -43,6 +41,7 @@ export class MapComponent implements AfterViewInit {
           id: e.payload.doc.data().id,
           nombre_museo: e.payload.doc.data().nombre_museo,
           ciudad: e.payload.doc.data().ciudad,
+          direccion: e.payload.doc.data().direccion,
           coordenadasX: e.payload.doc.data().coordenadasX,
           coordenadasY: e.payload.doc.data().coordenadasY,
         }
@@ -86,6 +85,7 @@ export class MapComponent implements AfterViewInit {
 
 
   public submitDetalleMuseos(nombre_museo: string, ciudad: string, numMuseo){
+
     let consultaMuseo: Consulta = {
       nombreMuseo: nombre_museo,
       ciudad: ciudad
@@ -99,6 +99,7 @@ export class MapComponent implements AfterViewInit {
           id: data[0]['id'],
           nombre_museo: data[0]['nombre_museo'],
           ciudad: data[0]['ciudad'],
+          direccion: data[0]['direccion'],
           coordenadasX: data[0]['coordenadasX'],
           coordenadasY: data[0]['coordenadasY']
         }
@@ -119,7 +120,7 @@ export class MapComponent implements AfterViewInit {
 
   private initMap(): void {
     this.map = L.map('map', {
-      center: [4.655011, -74.089214],
+      center: [4.660686, -74.093800],
       zoom: 6.5
     });
 

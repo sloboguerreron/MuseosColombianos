@@ -17,6 +17,7 @@ import { environment } from "src/environments/environment";
 import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { ConsultarMuseoService } from './services/consulta-museos.service';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { ConsultarMuseoService } from './services/consulta-museos.service';
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
+    FormsModule,
    /* MatSliderModule,
     MatToolbarModule,
     MatIconModule*/

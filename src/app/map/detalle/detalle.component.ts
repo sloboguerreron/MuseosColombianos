@@ -29,11 +29,4 @@ export class DetalleComponent implements OnInit {
   cerrarVentana() {
     this.description = !this.description;
   }
-
-  mostrarDetalle() {
-
-    console.log(' entro al hijito' + JSON.stringify(this.museoDetalle) ) ;
-
-
-  }
 }

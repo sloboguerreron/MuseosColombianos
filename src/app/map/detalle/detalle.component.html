@@ -3,7 +3,7 @@
 <div class="tab" *ngIf="showDescription()">
 
   <br>
-  <img src="../../../assets/museoLogo.png" alt="logo Museo">
+  <img src="../../../assets/museoLogo.png" alt="logo Museo" style="text-align:center">
   <div class="card-body">
     <h5  class="card-title">{{museoDetalle[0]['nombre']}}</h5>
     <p class="card-text" style="text-align: justify">
@@ -12,9 +12,11 @@
     </p>
     <p class="card-text" style="text-align: justify">
       País: Colombia <br>
-      Ciudad: {{museoMuseo[0]['ciudad']}} <br>
+      Direccion: {{museoMuseo[0]['direccion']}} <br>
+      <a>Link: {{museoDetalle[0]['homepage']}}</a> <br>
+      <a *ngIf="museoMuseo[0]['ciudad']"> Ciudad: {{museoMuseo[0]['ciudad']}}</a> <br>
     </p>
-
+    <br>
     <button (click)="cerrarVentana()">Cerrar</button>
   </div>
 </div>

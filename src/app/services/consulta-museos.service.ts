@@ -15,4 +15,8 @@ export class ConsultarMuseoService {
   public consultarMuseo(id) {
     return this.firestore.collection('museos', ref =>   ref.where('id', '==', id)).valueChanges();
   }
+
+  public consultarMuseoNombre(nombreMuseo) {
+    return this.firestore.collection('museos', ref => ref.where("nombre_museo", "==", nombreMuseo)).valueChanges();
+  }
 }

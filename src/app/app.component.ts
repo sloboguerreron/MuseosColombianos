@@ -2,6 +2,10 @@ import { ConsultarService } from './services/consultar.service';
 import { ConsultarMuseoService } from '../app/services/consulta-museos.service';
 import { Consulta } from './models/Consulta';
 import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Museo } from './models/museo';
+import { museoDetalle } from './models/museoDetalle';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -14,16 +18,59 @@ import { Component } from '@angular/core';
 
 export class AppComponent {
 
-  public cambioDeVentana: Boolean = false;
-  constructor(private service: ConsultarService,  private museosService: ConsultarMuseoService){}
+  textoDeInput: string = null;
+  public museoBuscar: Museo[] = [];
+  public museoDetalleBuscar: museoDetalle[] = [];
+  public showDescription: boolean;
+  //nombre_museo = "";
+  constructor(private service: ConsultarService, private museosService: ConsultarMuseoService) { }
+
+  public buscarMuseo() {
 
 
+    let nombre_museo = "Museo del Oro";
+    this.museosService.consultarMuseoNombre(nombre_museo).subscribe((data) => {
+      this.museoBuscar = [];
 
-  public buscarMuseo(){
-    let consulta: Consulta = {
+      if (data[0]) {
+        let museo: Museo = {
+          id: data[0]['id'],
+          nombre_museo: data[0]['nombre_museo'],
+          ciudad: data[0]['ciudad'],
+          direccion: data[0]['direccion'],
+          coordenadasX: data[0]['coordenadasX'],
+          coordenadasY: data[0]['coordenadasY']
+        }
+        this.museoBuscar.push(museo);
+        console.log(this.museoBuscar[0])
+        //consulta back
+
+        let consultaMuseo: Consulta = {
+          nombreMuseo: this.museoBuscar[0]['nombre_museo'],
+          ciudad: this.museoBuscar[0]['ciudad']
+        }
+        this.service.getMuseo(consultaMuseo).subscribe((ref) => {
+          this.museoDetalleBuscar = [];
+          console.log(ref);
+          this.museoDetalleBuscar.push(ref[0]);
+        });
+
+        this.showDescription = !this.showDescription;
+      } else {
+        Swal.fire(
+          'No se encuentra Museo',
+          'verifique el nombre del museo que desea buscar',
+          'error'
+        )
+      }
+
+    });
+
+    /*let consulta: Consulta = {
       nombreMuseo: "museo del oro",
       ciudad: "Bogotá"
     }
-    this.service.getMuseo(consulta);
+    this.museosService.consultarMuseo("3").subscribe((data) => { console.log(data)})
+    //this.service.getMuseo(consulta);*/
   }
 }
