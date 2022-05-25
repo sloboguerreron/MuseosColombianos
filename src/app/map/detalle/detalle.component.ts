@@ -11,7 +11,7 @@ import { IcuPlaceholder } from '@angular/compiler/src/i18n/i18n_ast';
 })
 export class DetalleComponent implements OnInit {
 
-  @Input() description: boolean = false;
+  @Input() description: boolean;
   @Input() museoDetalle: museoDetalle;
   @Input() museosColombia: Museo;
   @Input() museoMuseo: Museo;

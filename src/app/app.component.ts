@@ -7,33 +7,29 @@ import { Museo } from './models/museo';
 import { museoDetalle } from './models/museoDetalle';
 import Swal from 'sweetalert2';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 
-
-
 export class AppComponent {
 
   nombre_museo : string;
   public museoBuscar: Museo[] = [];
   public museoDetalleBuscar: museoDetalle[] = [];
-  public showDescription: boolean;
+  public mostrarDetalle: boolean = false;
+  public mostrarSlider: boolean = true;
   //nombre_museo = "";
   constructor(private service: ConsultarService, private museosService: ConsultarMuseoService) { }
 
   public buscarMuseo() {
-
-    console.log('este el nombre:');
-    console.log(this.nombre_museo);
-
+    this.mostrarSlider = true;
     this.nombre_museo = this.nombre_museo.toLowerCase();
     this.museosService.consultarMuseoNombre(this.nombre_museo).subscribe((data) => {
       this.museoBuscar = [];
       if (data[0]) {
+
         let museo: Museo = {
           id: data[0]['id'],
           nombre_museo: data[0]['nombre_museo'],
@@ -43,9 +39,9 @@ export class AppComponent {
           coordenadasY: data[0]['coordenadasY']
         }
         this.museoBuscar.push(museo);
+        console.log('entra a todo')
         console.log(this.museoBuscar[0])
         //consulta back
-
         let consultaMuseo: Consulta = {
           nombreMuseo: this.museoBuscar[0]['nombre_museo'],
           ciudad: this.museoBuscar[0]['ciudad']
@@ -56,8 +52,8 @@ export class AppComponent {
           this.museoDetalleBuscar.push(ref[0]);
         });
 
-        this.showDescription = !this.showDescription;
       } else {
+        this.mostrarSlider = false;
         Swal.fire(
           'No se encuentra Museo',
           'verifique el nombre del museo que desea buscar',
@@ -65,6 +61,9 @@ export class AppComponent {
         )
       }
     });
+    if(this.mostrarSlider === true){
+      this.mostrarDetalle = !this.mostrarDetalle;
+    }
     this.nombre_museo = "";
   }
 }

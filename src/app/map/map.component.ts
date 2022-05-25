@@ -24,7 +24,7 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 export class MapComponent implements AfterViewInit {
 
   private map;
-  public showDescription: boolean;
+  public showDescription: boolean = false;
   //museos lista
   museos = { count: 0, data: [] };
   public museosColombia: Museo[] = [];
